@@ -1,0 +1,25 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Sarala:wght@700&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  font-family: "Poppins", sans-serif;
+}
+.logo {
+  font-family: "Sarala", sans-serif;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 1.44px;
+}
+
+.grad {
+  background: linear-gradient(
+      178deg,
+      #3497f9 11.06%,
+      rgba(52, 151, 249, 0) 100%
+    ),
+    url(<path-to-image>), lightgray 50% / cover no-repeat;
+}
