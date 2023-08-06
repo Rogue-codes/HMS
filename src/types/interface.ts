@@ -60,3 +60,12 @@ export interface PatientFormValues {
     level:string;
     salary:number;
   }
+
+  export interface DrugFormValues{
+    product_name:string;
+    type:string;
+    price:number;
+    in_stock:number;
+    expiry_date:string;
+    vendor:string;
+}
