@@ -23,3 +23,7 @@
     ),
     url(<path-to-image>), lightgray 50% / cover no-repeat;
 }
+
+.react-datetime-picker__wrapper{
+  border: none;
+}

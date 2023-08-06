@@ -3,7 +3,7 @@ interface BackdropProps{
 }
 export default function Backdrop({children}:BackdropProps) {
   return (
-    <div className="w-full h-screen flex justify-center items-center fixed left-0 top-0 bg-[#3333337d]">
+    <div className="w-full h-screen flex justify-center items-center overflow-scroll pb-28 pt-28 fixed left-0 top-0 bg-[#3333337d]">
         {children}
     </div>
   )

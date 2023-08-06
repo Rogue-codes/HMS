@@ -48,3 +48,15 @@ export interface PatientFormValues {
     age: string;
     blood_group: string;
   }
+
+  export interface DoctorsFormValues {
+    name: string;
+    email: string;
+    phone_number: string;
+    gender: string;
+    age: number;
+    unit:string;
+    address:string;
+    level:string;
+    salary:number;
+  }

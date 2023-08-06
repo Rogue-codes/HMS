@@ -196,7 +196,7 @@ export default function Patient() {
               initial="hidden"
               animate="visible"
               exit="exit"
-              className="w-[80%] mx-auto lg:w-[25rem] relative bg-[#fff] px-9 py-16 shadow-2xl rounded-md"
+              className="w-[80%] mx-auto lg:w-[45%] relative bg-[#fff] px-9 py-16 shadow-2xl rounded-md"
             >
               <LiaTimesSolid
                 className="absolute text-lg cursor-pointer hover:scale-110 transition-all text-text-2 right-4 top-4"
