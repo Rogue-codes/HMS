@@ -38,7 +38,15 @@ export default function Tr({ patient, index, activeTab }: Patient) {
       </td>
       <td className="text-center">{patient.age}</td>
       <td className="text-center">{patient.doctor}</td>
-      {activeTab === 1 && <td className={`${patient.fee_status ? "text-[#27AE60]" : "text-[#FF6558]"} text-center`}>{patient.fee_status ? "Paid" : "UnPaid"}</td>}
+      {activeTab === 1 && (
+        <td
+          className={`${
+            patient.fee_status ? "text-[#27AE60]" : "text-[#FF6558]"
+          } text-center`}
+        >
+          {patient.fee_status ? "Paid" : "UnPaid"}
+        </td>
+      )}
       <td className="text-center text-blue-1">Reschedule</td>
     </tr>
   );

@@ -11,6 +11,10 @@ import doctor2 from "./doctor2.jpg";
 import doctor3 from "./doctor3.jpeg";
 import doctor4 from "./doctor4.png";
 import doctor5 from "./doctor5.jpg";
+import edu1 from "./edu1.svg";
+import edu2 from "./edu2.svg";
+import edu3 from "./edu3.svg";
+import edu4 from "./edu4.svg";
 export {
   loginImg,
   profile,
@@ -25,4 +29,8 @@ export {
   doctor3,
   doctor4,
   doctor5,
+  edu1,
+  edu2,
+  edu3,
+  edu4,
 };
