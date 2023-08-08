@@ -1,5 +1,5 @@
-import { doctor1, doctor2, doctor3, doctor4, doctor5, eg, elizabet, gopal, rajan, sumanth } from "../../public/assets";
-import { DoctorProps, DrugProps, NavProps, PatientProps } from "../types/interface";
+import { doctor1, doctor2, doctor3, doctor4, doctor5, edu1, edu2, edu3, edu4, eg, elizabet, gopal, rajan, sumanth } from "../../public/assets";
+import { DoctorProps, DrugProps, EduTypes, NavProps, PatientProps } from "../types/interface";
 
 export const NavLinks: NavProps[] = [
     {
@@ -252,5 +252,28 @@ export const drugArr: DrugProps[] = [
         in_stock:200,
         expiry_date:"08 Sep 2024",
         vendor:"Joe Industries",
+    },
+]
+
+export const eduArr:EduTypes[] = [
+    {
+        name: "4 Nutritions to Take Daily",
+        author: "By Joel Paulliston",
+        img: edu1
+    },
+    {
+        name: "6 Healthy Lifestyle Tips ",
+        author: "By Joel Paulliston",
+        img: edu2
+    },
+    {
+        name: "Do’s and Don’ts in Hospital",
+        author: "By Joel Paulliston",
+        img: edu3
+    },
+    {
+        name: "Healthy Habits to Follow",
+        author: "By Joel Paulliston",
+        img: edu4
     },
 ]

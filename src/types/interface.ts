@@ -69,3 +69,9 @@ export interface PatientFormValues {
     expiry_date:string;
     vendor:string;
 }
+
+export interface EduTypes{
+    name:string;
+    author:string;
+    img:string;
+}

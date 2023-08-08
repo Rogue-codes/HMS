@@ -33,7 +33,7 @@ export default function DashboardTable() {
         ></div>
       </div>
 
-      <div>
+      <div className="p-5">
         <table className="w-full">
           <thead>
             <tr className="h-12 text-[#242222] text-xs">

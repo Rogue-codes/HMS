@@ -1,9 +1,17 @@
 import { IoIosNotifications } from "react-icons/io";
 import { profile } from "../../../public/assets";
+import { useLocation } from "react-router-dom";
 export default function Nav() {
+  const location = useLocation()
+
+  const pageName = location.pathname.split("/")
+
+  const actualPage = !pageName[1] ? "Dashboard" : pageName[1]
+
+
   return (
     <div className="w-[80%] ml-[20%] py-9 flex justify-between items-center px-8">
-      <p className="text-lg font-medium text-text-1">Appointments</p>
+      <p className="text-lg font-medium text-text-1">{actualPage.toLocaleUpperCase()}</p>
 
       <div className="flex justify-start gap-8 items-center">
         <div className="relative">
