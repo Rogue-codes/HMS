@@ -10,6 +10,7 @@ import Backdrop from "../../widgets/modal/Backdrop";
 import { AnimatePresence } from "framer-motion";
 import { motion } from "framer-motion";
 import { useFormik, FormikErrors } from "formik";
+import DateSelect from "../../widgets/date-time/DateSelect";
 
 export default function Patient() {
   const [activeTab, setActiveTab] = useState<number>(0);
@@ -108,17 +109,25 @@ export default function Patient() {
           <div>
             <input
               type="search"
-              className="w-[14rem] bg-[#EBF5FF] py-2 px-3 rounded-xl placeholder:text-xs"
+              className="w-[14rem] bg-[#EBF5FF] py-2 px-3 rounded-xl focus:outline-none text-sm placeholder:text-xs"
               placeholder="Search"
               name=""
               id=""
             />
           </div>
 
-          <button className="w-[14rem] text-xs px-6 py-2 border text-text-2 rounded-xl flex justify-between items-center border-blue-1">
-            Filter by Date{" "}
-            <BiCalendar size="20" color="rgba(52, 151, 249, 1)" />
-          </button>
+          <div>
+            <DateSelect
+              className="border-blue-1 border w-full items-center rounded-lg text-lg p-2"
+              placeholderText="Filter by date"
+              // selected={expiryDate}
+              // onChange={(date) => {
+                // setExpiryDate(date);
+              // }}
+              maxDate={new Date()}
+              type="table"
+            />
+          </div>
         </div>
 
         <div className="relative py-9 w-full mt-6">

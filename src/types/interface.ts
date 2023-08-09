@@ -75,3 +75,8 @@ export interface EduTypes{
     author:string;
     img:string;
 }
+
+export interface SelectOptions{
+    value: string;
+    label: string;
+}

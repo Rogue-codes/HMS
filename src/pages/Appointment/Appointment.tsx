@@ -11,6 +11,7 @@ import { PatientFormValues } from "../../types/interface";
 import Backdrop from "../../widgets/modal/Backdrop";
 import { LiaTimesSolid } from "react-icons/lia";
 import DateTime from "../../widgets/date-time/DateTime";
+import DateSelect from "../../widgets/date-time/DateSelect";
 
 export default function Appointment() {
   const [activeTab, setActiveTab] = useState<number>(0);
@@ -118,10 +119,18 @@ export default function Appointment() {
             />
           </div>
 
-          <button className="w-[14rem] text-xs px-6 py-2 border text-text-2 rounded-xl flex justify-between items-center border-blue-1">
-            Filter by Date{" "}
-            <BiCalendar size="20" color="rgba(52, 151, 249, 1)" />
-          </button>
+          <div>
+            <DateSelect
+              className="border-blue-1 border w-full items-center rounded-lg text-lg p-2"
+              placeholderText="Filter by date"
+              // selected={expiryDate}
+              // onChange={(date) => {
+                // setExpiryDate(date);
+              // }}
+              maxDate={new Date()}
+              type="table"
+            />
+          </div>
         </div>
 
         <div className="py-9 w-full mt-6">
@@ -165,7 +174,9 @@ export default function Appointment() {
                 className="absolute text-lg cursor-pointer hover:scale-110 transition-all text-text-2 right-4 top-4"
                 onClick={() => setShowModal(false)}
               />
-              <p className="text-blue-1 mb-5 text-sm font-bold">Create Appointment</p>
+              <p className="text-blue-1 mb-5 text-sm font-bold">
+                Create Appointment
+              </p>
               <form action="" onSubmit={formik.handleSubmit}>
                 <div className="w-full">
                   <input
@@ -284,11 +295,18 @@ export default function Appointment() {
                 </div>
 
                 <div className="w-full flex justify-start gap-4 items-center">
-                  <div className="w-[30%] flex justify-center items-center text-xs text-blue-1 shadow-[3px_3px_6px_0px_rgba(182,190,196,0.15),-1.5px_-1.5px_6px_0px_rgba(182,190,196,0.15)] px-2 py-4 mt-5 rounded-lg bg-white cursor-pointer" onClick={generateRandomNumber}>
+                  <div
+                    className="w-[30%] flex justify-center items-center text-xs text-blue-1 shadow-[3px_3px_6px_0px_rgba(182,190,196,0.15),-1.5px_-1.5px_6px_0px_rgba(182,190,196,0.15)] px-2 py-4 mt-5 rounded-lg bg-white cursor-pointer"
+                    onClick={generateRandomNumber}
+                  >
                     Fetch Doctor
                   </div>
 
-                  {randomNumber && <p className="text-xs mt-5 p-3">Dr. {randomNumber && doctorArr[randomNumber].name}</p>}
+                  {randomNumber && (
+                    <p className="text-xs mt-5 p-3">
+                      Dr. {randomNumber && doctorArr[randomNumber].name}
+                    </p>
+                  )}
                 </div>
 
                 <div className="w-full mt-5">

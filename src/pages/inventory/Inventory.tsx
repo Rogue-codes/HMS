@@ -1,16 +1,16 @@
 import { useState } from "react";
 import Tab from "../../components/tabs/Tab";
 import { AiOutlinePlus } from "react-icons/ai";
-import { BiCalendar } from "react-icons/bi";
 import { drugArr } from "../../utils";
 import InventoryTR from "../../components/table/InventoryTR";
 import { FormikErrors, useFormik } from "formik";
-import { DrugFormValues } from "../../types/interface";
+import { DrugFormValues, SelectOptions } from "../../types/interface";
 import { AnimatePresence } from "framer-motion";
 import { motion } from "framer-motion";
 import Backdrop from "../../widgets/modal/Backdrop";
 import { LiaTimesSolid } from "react-icons/lia";
 import DateSelect from "../../widgets/date-time/DateSelect";
+import Select from "../../widgets/select/Select";
 
 export default function Inventory() {
   const [activeTab, setActiveTab] = useState<number>(0);
@@ -76,6 +76,49 @@ export default function Inventory() {
     },
   });
 
+  // options Array
+  const selectArr: SelectOptions[] = [
+    {
+      value: "In Stock",
+      label: "In Stock",
+    },
+    {
+      value: "out of Stock",
+      label: "out of Stock",
+    },
+  ];
+
+  const productTypeArr: SelectOptions[] = [
+    {
+      value: "All",
+      label: "All",
+    },
+    {
+      value: "Tablet",
+      label: "Tablet",
+    },
+    {
+      value: "Capsule",
+      label: "Capsule",
+    },
+    {
+      value: "Syrup",
+      label: "Syrup",
+    },
+    {
+      value: "Inhaler",
+      label: "Inhaler",
+    },
+    {
+      value: "Cream",
+      label: "Cream",
+    },
+    {
+      value: "Soap",
+      label: "Soap",
+    },
+  ];
+
   return (
     <div className="w-[80%] ml-[20%] pb-12">
       <div className=" rounded-lg shadow-[rgba(17,17,26,0.1)0px_1px_0px] bg-white">
@@ -97,24 +140,26 @@ export default function Inventory() {
           <div>
             <input
               type="search"
-              className="w-[14rem] bg-[#EBF5FF] py-2 px-3 rounded-xl placeholder:text-xs"
+              className="w-[14rem] text-sm bg-[#EBF5FF] py-2 px-3 rounded-xl placeholder:text-xs focus:outline-none"
               placeholder="Search"
               name=""
               id=""
             />
           </div>
 
-          <button className="w-[14rem] text-xs px-6 py-2 border text-text-2 rounded-xl flex justify-between items-center border-blue-1">
-            Product Type <BiCalendar size="20" color="rgba(52, 151, 249, 1)" />
-          </button>
+          <Select selectArr={productTypeArr} />
 
-          <button className="w-[14rem] text-xs px-6 py-2 border text-text-2 rounded-xl flex justify-between items-center border-blue-1">
-            In Stock <BiCalendar size="20" color="rgba(52, 151, 249, 1)" />
-          </button>
+          <Select selectArr={selectArr} />
 
-          <button className="w-[14rem] text-xs px-6 py-2 border text-text-2 rounded-xl flex justify-between items-center border-blue-1">
-            Expiry Date <BiCalendar size="20" color="rgba(52, 151, 249, 1)" />
-          </button>
+          <DateSelect
+            className="border border-blue-1 w-full items-center rounded-lg text-lg p-2"
+            placeholderText="Expiry date"
+            selected={expiryDate}
+            onChange={(date) => {
+              setExpiryDate(date);
+            }}
+            type="form"
+          />
         </div>
 
         <div className="relative py-9 w-full mt-6">
@@ -201,7 +246,7 @@ export default function Inventory() {
                       <option value="Syrup">Syrup</option>
                       <option value="Inhaler">Inhaler</option>
                       <option value="Cream">Cream</option>
-                      <option value="soap">soap</option>
+                      <option value="Soap">Soap</option>
                     </select>
                     {formik.touched.type && formik.errors.type ? (
                       <p className="text-red-600 text-xs">
@@ -267,6 +312,7 @@ export default function Inventory() {
                         setExpiryDate(date);
                       }}
                       minDate={new Date()}
+                      type="form"
                     />
                   </div>
                 </div>

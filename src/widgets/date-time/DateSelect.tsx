@@ -2,7 +2,7 @@
 import React from 'react';
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
-import { BsCalendarPlus } from 'react-icons/bs';
+import { BiCalendar } from 'react-icons/bi';
 
 interface DateSelectProps {
     className?: string,
@@ -10,9 +10,11 @@ interface DateSelectProps {
     placeholderText?: string,
     selected? : Date | null,
     minDate? : Date,
+    maxDate? : Date,
     style?: React.CSSProperties,
     disbaled? : boolean,
     nullValuePlaceHolder? : string
+    type:string;
 }
 export default function DateSelect(
     {
@@ -23,15 +25,17 @@ export default function DateSelect(
         minDate,
         style,
         disbaled=false,
-        nullValuePlaceHolder=""
+        nullValuePlaceHolder="",
+        type,
+        maxDate
     }: DateSelectProps
 ) {
     const CustomInput = React.forwardRef(({value, onClick, onChange} : any, ref : any) => {
         return <div onClick={onClick}
-                className={"flex item-center cursor-pointer items-center border border-transparent  " + className + (disbaled ? " opacity-80" : ' hover:border-[#B0BACA]')} style={style}  >
-            <BsCalendarPlus variant='Bold' size="20" className='mr-2 text-blue-1 -ml-1'/>
+                className={`flex ${type === "form" ? "flex" : "flex-row-reverse"} item-center cursor-pointer items-center border  ` + className + (disbaled ? " opacity-80" : '')} style={style}  >
+            <BiCalendar variant='Bold' size="20" className='mr-2 text-blue-1 -ml-1'/>
             <input 
-                className='disabled:cursor-not-allowed focus:outline-none text-sm w-full placeholder:text-blue-11 text-blue-11 bg-transparent'
+                className='disabled:cursor-not-allowed focus:outline-none text-xs w-full placeholder:text-blue-11 text-blue-11 bg-transparent'
                 value={value ? value : nullValuePlaceHolder}
                 onChange={onChange}
                 placeholder={placeholderText}
@@ -46,6 +50,7 @@ export default function DateSelect(
             customInput={<CustomInput />}
             selected={selected}
             minDate={minDate}
+            maxDate={maxDate}
             // disabled={disbaled}
         />
     </div>

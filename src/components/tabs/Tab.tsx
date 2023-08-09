@@ -19,7 +19,7 @@ export default function Tab({ data, activeTab, setActiveTab }: TabProps) {
       ))}
       <div
         className={`${
-          activeTab === 0 ? "left-9 w-40" : "left-[45%] w-56"
+          activeTab === 0 ? "left-9 w-36" : "left-[45%] w-48"
         } border-b  border absolute left-9 bottom-0 border-blue-1 transition-all`}
       ></div>
     </div>

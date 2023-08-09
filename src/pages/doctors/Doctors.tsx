@@ -119,11 +119,6 @@ export default function Doctors() {
               id=""
             />
           </div>
-
-          <button className="w-[14rem] text-xs px-6 py-2 border text-text-2 rounded-xl flex justify-between items-center border-blue-1">
-            Filter by Date{" "}
-            <BiCalendar size="20" color="rgba(52, 151, 249, 1)" />
-          </button>
         </div>
 
         <div className="relative py-9 w-full mt-6">
