@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Tab from "../../components/tabs/Tab";
 import { AiOutlinePlus, AiOutlineSend } from "react-icons/ai";
-import { BiCalendar } from "react-icons/bi";
 import { patientArr } from "../../utils";
 import PatientTr from "../../components/table/PatientTR";
 import { LiaTimesSolid } from "react-icons/lia";

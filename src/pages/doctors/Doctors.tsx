@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Tab from "../../components/tabs/Tab";
 import { AiOutlinePlus } from "react-icons/ai";
-import { BiCalendar } from "react-icons/bi";
 import { doctorArr } from "../../utils";
 import { AnimatePresence } from "framer-motion";
 import { motion } from "framer-motion";
