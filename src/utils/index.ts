@@ -45,7 +45,9 @@ export const patientArr: PatientProps[] =[
         phone_number: "+91 12345 67890",
         email: "elsabethpolsan@hotmail.com",
         gender:"Female",
-        img: elizabet
+        img: elizabet,
+        dateAdmitted:"",
+        dateDischarged:""
     },
     {
         name: "John David",
@@ -57,7 +59,9 @@ export const patientArr: PatientProps[] =[
         blood_group: "B+ve",
         phone_number: "+91 12345 67890",
         email: "davidjohn22@gmail.com",
-        gender:"Male"
+        gender:"Male",
+        dateAdmitted:"",
+        dateDischarged:""
     },
     {
         name: "Krishtav Rajan",
@@ -69,7 +73,9 @@ export const patientArr: PatientProps[] =[
         blood_group: "AB-ve",
         phone_number: "+91 12345 67890",
         email: "krishnarajan23@gmail.com",
-        gender:"Male"
+        gender:"Male",
+        dateAdmitted:"",
+        dateDischarged:""
     },
     {
         name: "Sumanth Tinson",
@@ -82,7 +88,9 @@ export const patientArr: PatientProps[] =[
         phone_number: "+91 12345 67890",
         email: "tintintin@gmail.com",
         gender:"Male",
-        img:sumanth
+        img:sumanth,
+        dateAdmitted:"",
+        dateDischarged:""
     },
     {
         name: "EG Subramani",
@@ -95,7 +103,9 @@ export const patientArr: PatientProps[] =[
         phone_number: "+91 12345 67890",
         email: "egs31322@gmail.com",
         gender:"Male",
-        img:eg
+        img:eg,
+        dateAdmitted:"",
+        dateDischarged:""
     },
     {
         name: "Ranjan Maari",
@@ -108,7 +118,9 @@ export const patientArr: PatientProps[] =[
         phone_number: "+91 12345 67890",
         email: "ranajanmaari@yahoo.com",
         gender:"Male",
-        img:rajan
+        img:rajan,
+        dateAdmitted:"",
+        dateDischarged:""
     },
     {
         name: "Philipile Gopal",
@@ -121,7 +133,9 @@ export const patientArr: PatientProps[] =[
         phone_number: "+91 12345 67890",
         email: "gopal22@gmail.com",
         gender:"Male",
-        img:gopal
+        img:gopal,
+        dateAdmitted:"",
+        dateDischarged:""
     },
 ]
 
