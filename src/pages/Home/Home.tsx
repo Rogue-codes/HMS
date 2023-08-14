@@ -1,10 +1,17 @@
+import { useEffect } from "react";
 import Activity from "../../components/dashboard/activity-overview/Activity";
 import PieChartBox from "../../components/dashboard/charts/PieChart";
 import EduContents from "../../components/dashboard/edu-contents/EduContents";
 import PatientFee from "../../components/dashboard/patient-fee/PatientFee";
 import DashboardTable from "../../components/dashboard/table/DashboardTable";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
+  const navigate = useNavigate()
+  useEffect(()=>{
+    const loggedIn = localStorage.getItem('user')
+    !loggedIn && navigate('/login')
+  },[navigate])
   return (
     <div className="w-[80%] bg-blue-2  ml-[20%] min-h-screen">
       <div className="rounded">

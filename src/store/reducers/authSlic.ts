@@ -1,7 +1,17 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import { createSlice } from "@reduxjs/toolkit"
 
-
-const initialState ={
+export interface User{
+    username: string;
+    email:string;
+    isVerified:boolean;
+    id:string;
+}
+export interface InitialStateInterface{
+    user: User | null
+    isLoggedIn:boolean;
+}
+const initialState: InitialStateInterface ={
     user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : {},
     isLoggedIn: localStorage.getItem('user') ? true : false
 }
@@ -17,10 +27,16 @@ export const authSlice = createSlice({
 
         },
         logout:(state)=>{
-            state.user = {}
+            state.user = null
             localStorage.removeItem('user')
+        },
+        verify:(state,action)=>{
+            if (state.user) {
+                state.user.isVerified = action.payload;
+                localStorage.setItem("user", JSON.stringify(state.user));
+              }
         }
     }
 }) 
 
-export const {login, logout} = authSlice.actions
+export const {login, logout, verify} = authSlice.actions

@@ -6,10 +6,12 @@ import Appointment from "./pages/Appointment/Appointment";
 import Patient from "./pages/Patients/Patient";
 import Doctors from "./pages/doctors/Doctors";
 import Inventory from "./pages/inventory/Inventory";
+import Register from "./pages/register/Register";
 function App() {
   return (
     <main>
         <Routes>
+          <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
 
           <Route path="/" element={<Home />} />

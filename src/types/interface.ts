@@ -16,6 +16,8 @@ export interface PatientProps{
     email: string
     gender: string
     img?: string
+    dateAdmitted: Date;
+    dateDischarged: Date;
 }
 
 export interface DoctorProps{

@@ -12,7 +12,7 @@ export default function PatientTr({ patient, index, handleChat }: Patient) {
     const words = name.split(" ");
     const FName = words.length > 0 && words[0][0];
     const LName = words.length > 1 && words[words.length - 1][0];
-    const abrv = `${FName} ${LName}`;
+    const abrv = `${FName}${LName}`;
     return abrv;
   };
 

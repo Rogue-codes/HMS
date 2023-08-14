@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { IoIosNotifications } from "react-icons/io";
 import { profile } from "../../../public/assets";
 import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { User } from "../../store/reducers/authSlic";
 export default function Nav() {
   const location = useLocation()
 
@@ -8,6 +11,7 @@ export default function Nav() {
 
   const actualPage = !pageName[1] ? "Dashboard" : pageName[1]
 
+  const admin:User = useSelector((state:any)=>state.auth.user)
 
   return (
     <div className="w-[80%] ml-[20%] py-9 flex justify-between items-center px-8">
@@ -24,7 +28,7 @@ export default function Nav() {
             <img src={profile} className="w-full h-full rounded-full object-contain" alt="" />
           </div>
           <div>
-            <p className="text-text-1 text-xs font-medium">Jonitha Cathrine</p>
+            <p className="text-text-1 text-xs font-medium">{admin.username}</p>
             <p className="text-text-2 text-[11px] font-normal">Admin</p>
           </div>
         </div>

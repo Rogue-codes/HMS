@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import Tab from "../../components/tabs/Tab";
 import { AiOutlinePlus, AiOutlineSend } from "react-icons/ai";
-import { patientArr } from "../../utils";
 import PatientTr from "../../components/table/PatientTR";
 import { LiaTimesSolid } from "react-icons/lia";
 import { PatientFormValues, PatientProps } from "../../types/interface";
@@ -10,11 +10,15 @@ import { AnimatePresence } from "framer-motion";
 import { motion } from "framer-motion";
 import { useFormik, FormikErrors } from "formik";
 import DateSelect from "../../widgets/date-time/DateSelect";
+import { useDispatch, useSelector } from "react-redux";
+import { addPatient } from "../../store/reducers/patientSlice";
 
 export default function Patient() {
   const [activeTab, setActiveTab] = useState<number>(0);
+  const [activeTabForm, setActiveTabForm] = useState<number>(0);
 
   const tabArr: string[] = ["PATIENT"];
+  const tabFormArr: string[] = ["new","registered"]
 
   const [showMsgBox, setShowMsgBox] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -24,6 +28,10 @@ export default function Patient() {
     setShowMsgBox(true);
     setUserChatDetails(user);
   };
+
+  const patient = useSelector((state:any)=>state.patient.patients)
+
+  console.log(patient)
 
   const dropIn = {
     hidden: {
@@ -46,6 +54,8 @@ export default function Patient() {
     },
   };
 
+  const dispatch = useDispatch()
+
   const emailRegex = RegExp(/^\S+@\S+\.\S+$/);
   const formik = useFormik({
     initialValues: {
@@ -55,9 +65,12 @@ export default function Patient() {
       gender: "",
       blood_group: "",
       age: "",
+      dateAdmitted: new Date(),
     },
     onSubmit: (values) => {
-      console.log(values);
+      const val = {...values, admitted: true, discharged:false};
+      dispatch(addPatient(val))
+      setShowModal(false)
     },
     validate: (values) => {
       const errors: FormikErrors<PatientFormValues> = {};
@@ -88,7 +101,7 @@ export default function Patient() {
   });
 
   return (
-    <div className="w-[80%] ml-[20%] pb-12">
+    <div className="w-[80%] min-h-screen ml-[20%] pb-12">
       <div className=" rounded-lg shadow-[rgba(17,17,26,0.1)0px_1px_0px] bg-white">
         <div className="pt-9 flex justify-between items-center pb-2 border-b border-[#CFCFCF] pr-9">
           <Tab
@@ -143,7 +156,7 @@ export default function Patient() {
               </tr>
             </thead>
             <tbody className="w-full">
-              {patientArr.map((patient, index) => (
+              {patient.map((patient: PatientProps, index: number) => (
                 <PatientTr
                   patient={patient}
                   index={index}
@@ -210,6 +223,7 @@ export default function Patient() {
                 className="absolute text-lg cursor-pointer hover:scale-110 transition-all text-text-2 right-4 top-4"
                 onClick={() => setShowModal(false)}
               />
+              <Tab data={tabFormArr}    activeTab={activeTabForm} setActiveTab={setActiveTabForm}/>
               <p className="text-blue-1 mb-5 text-sm font-bold">Add Patient</p>
               <form action="" onSubmit={formik.handleSubmit}>
                 <div className="w-full">
@@ -349,7 +363,7 @@ export default function Patient() {
                   )}
                 </div>
 
-                <button className="w-full p-3 bg-blue-1 text-white mt-5 rounded-lg hover:scale-105 transition-all">
+                <button type="submit" className="w-full p-3 bg-blue-1 text-white mt-5 rounded-lg hover:scale-105 transition-all">
                   Submit
                 </button>
               </form>
