@@ -99,7 +99,7 @@ export default function Register() {
       </div>
 
       <div className="w-1/2 bg-white flex flex-col justify-center items-center h-full p-12">
-        <p className="text-blue-1 mb-8 text-center text-xl font-bold">LOGIN</p>
+        <p className="text-blue-1 mb-8 text-center text-xl font-bold">REGISTER</p>
         <form
           action=""
           className="w-full shadow-[rgba(0,0,0,0.02)_0px_1px_3px_0px,rgba(27,31,35,0.15)_0px_0px_0px_1px] px-12 py-16 rounded-lg"
