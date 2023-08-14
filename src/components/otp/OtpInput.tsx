@@ -24,7 +24,7 @@ export default function OtpInput({
   setShowOtpModal,
 }: Props) {
   const userId = useSelector((state: any) => state.auth.user.id);
-  const base_url = import.meta.env.VITE_APP_API_URL + "";
+  const base_url = 'https://tes-hms.onrender.com/api/v1/Tes-HMS'
 
   const RE_DIGIT = new RegExp(/^\d+$/);
 

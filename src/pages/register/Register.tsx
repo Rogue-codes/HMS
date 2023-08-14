@@ -21,7 +21,7 @@ type UserRegistrationType = {
   confirmPassword: string;
 };
 export default function Register() {
-  const base_url = import.meta.env.VITE_APP_API_URL + "";
+  const base_url = 'https://tes-hms.onrender.com/api/v1/Tes-HMS';
 
   const [type, setType] = useState<string>("password");
   const [confrimPasswordType, setconfirmPasswordType] =
