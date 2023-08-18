@@ -12,26 +12,28 @@ import { useFormik, FormikErrors } from "formik";
 import DateSelect from "../../widgets/date-time/DateSelect";
 import { useDispatch, useSelector } from "react-redux";
 import { addPatient } from "../../store/reducers/patientSlice";
+import { notfound } from "../../../public/assets";
+import ApiFetcher from "../../utils/Api";
+// const [cookies, removeCookie] = useCookies([]);
+
 
 export default function Patient() {
   const [activeTab, setActiveTab] = useState<number>(0);
-  const [activeTabForm, setActiveTabForm] = useState<number>(0);
 
   const tabArr: string[] = ["PATIENT"];
-  const tabFormArr: string[] = ["new","registered"]
-
   const [showMsgBox, setShowMsgBox] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [userChatDetails, setUserChatDetails] = useState<PatientProps>();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleChat = (user: PatientProps) => {
     setShowMsgBox(true);
     setUserChatDetails(user);
   };
 
-  const patient = useSelector((state:any)=>state.patient.patients)
+  const patient = useSelector((state: any) => state.patient.patients);
 
-  console.log(patient)
+  console.log(patient);
 
   const dropIn = {
     hidden: {
@@ -54,7 +56,7 @@ export default function Patient() {
     },
   };
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const emailRegex = RegExp(/^\S+@\S+\.\S+$/);
   const formik = useFormik({
@@ -67,10 +69,25 @@ export default function Patient() {
       age: "",
       dateAdmitted: new Date(),
     },
-    onSubmit: (values) => {
-      const val = {...values, admitted: true, discharged:false};
-      dispatch(addPatient(val))
-      setShowModal(false)
+    onSubmit: async (values) => {
+      setLoading(true);
+      try {
+        const res = await ApiFetcher.post(`/auth/patient/admit`, {
+          patientName: values.name,
+          age: values.age,
+          blood_group: values.blood_group,
+          phone_number: values.phone_number,
+          email: values.email,
+          gender: values.gender,
+        }
+        );
+        setLoading(false)
+        dispatch(addPatient(res?.data?.data));
+        setShowModal(false);
+      } catch (error) {
+        setLoading(false);
+        console.log(error);
+      }
     },
     validate: (values) => {
       const errors: FormikErrors<PatientFormValues> = {};
@@ -134,7 +151,7 @@ export default function Patient() {
               placeholderText="Filter by date"
               // selected={expiryDate}
               // onChange={(date) => {
-                // setExpiryDate(date);
+              // setExpiryDate(date);
               // }}
               maxDate={new Date()}
               type="table"
@@ -143,28 +160,44 @@ export default function Patient() {
         </div>
 
         <div className="relative py-9 w-full mt-6">
-          <table className="w-full">
-            <thead>
-              <tr className="h-12 text-[#242222] text-xs">
-                <th>Patient Name</th>
-                <th>Patient Age</th>
-                <th>Gender</th>
-                <th>Blood Group</th>
-                <th>Phone Number</th>
-                <th>Email ID</th>
-                <th>User Action</th>
-              </tr>
-            </thead>
-            <tbody className="w-full">
-              {patient.map((patient: PatientProps, index: number) => (
-                <PatientTr
-                  patient={patient}
-                  index={index}
-                  handleChat={handleChat}
-                />
-              ))}
-            </tbody>
-          </table>
+          {patient.length ? (
+            <table className="w-full">
+              <thead>
+                <tr className="h-12 text-[#242222] text-xs">
+                  <th>Patient Name</th>
+                  <th>Patient Age</th>
+                  <th>Gender</th>
+                  <th>Blood Group</th>
+                  <th>Phone Number</th>
+                  <th>Email ID</th>
+                  <th>User Action</th>
+                </tr>
+              </thead>
+              <tbody className="w-full">
+                {patient.map((patient: PatientProps, index: number) => (
+                  <PatientTr
+                    patient={patient}
+                    index={index}
+                    handleChat={handleChat}
+                  />
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <div className="w-full flex flex-col justify-center items-center p-5">
+              <div className="w-[300px] h-[300px] flex flex-col justify-center items-center">
+                <img src={notfound} alt="" />{" "}
+                <p className="text-center">
+                  No Patient Available at this time Click on the{" "}
+                  <strong className="text-center text-blue-1">
+                    New patient
+                  </strong>{" "}
+                  button to add a patient{" "}
+                </p>
+              </div>
+            </div>
+          )}
+
           {showMsgBox && (
             <div className="w-[18rem] flex flex-col justify-between items-center shadow-[0px_6px_16px_2px_rgba(0,0,0,0.16)] z-10 bg-white rounded-xl h-[20rem] absolute right-0 bottom-0">
               <div className="w-full flex justify-between items-center px-4 py-6 bg-blue-1 rounded-tr-xl rounded-tl-xl">
@@ -223,7 +256,6 @@ export default function Patient() {
                 className="absolute text-lg cursor-pointer hover:scale-110 transition-all text-text-2 right-4 top-4"
                 onClick={() => setShowModal(false)}
               />
-              <Tab data={tabFormArr}    activeTab={activeTabForm} setActiveTab={setActiveTabForm}/>
               <p className="text-blue-1 mb-5 text-sm font-bold">Add Patient</p>
               <form action="" onSubmit={formik.handleSubmit}>
                 <div className="w-full">
@@ -363,8 +395,11 @@ export default function Patient() {
                   )}
                 </div>
 
-                <button type="submit" className="w-full p-3 bg-blue-1 text-white mt-5 rounded-lg hover:scale-105 transition-all">
-                  Submit
+                <button
+                  type="submit"
+                  className="w-full p-3 bg-blue-1 text-white mt-5 rounded-lg hover:scale-105 transition-all"
+                >
+                  {loading ? "Loading..." : "Submit"}
                 </button>
               </form>
             </motion.div>

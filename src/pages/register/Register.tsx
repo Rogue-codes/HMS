@@ -7,12 +7,12 @@ import { BsFillEyeSlashFill, BsShieldLockFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { FormikErrors, useFormik } from "formik";
 import { AiOutlineMail } from "react-icons/ai";
-import axios from "axios";
 import Backdrop from "../../widgets/modal/Backdrop";
 import OtpInput from "../../components/otp/OtpInput";
 import { LiaTimesSolid } from "react-icons/lia";
 import { useDispatch } from "react-redux";
 import { login } from "../../store/reducers/authSlic";
+import ApiFetcher from "../../utils/Api";
 
 type UserRegistrationType = {
   username: string;
@@ -21,7 +21,6 @@ type UserRegistrationType = {
   confirmPassword: string;
 };
 export default function Register() {
-  const base_url = 'https://tes-hms.onrender.com/api/v1/Tes-HMS';
 
   const [type, setType] = useState<string>("password");
   const [confrimPasswordType, setconfirmPasswordType] =
@@ -44,7 +43,7 @@ export default function Register() {
       const { username, password, email } = values;
       setLoading(true);
       try {
-        const res = await axios.post(`${base_url}/auth/signup`, {
+        const res = await ApiFetcher.post(`/auth/signup`, {
           username,
           password,
           email,
@@ -54,6 +53,7 @@ export default function Register() {
             setShowOtpModal(true);
         }
         dispatch(login(res?.data?.data))
+        localStorage.setItem('token', JSON.stringify(res.data.token));
       } catch (error) {
         setLoading(false);
         console.log(error);

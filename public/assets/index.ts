@@ -15,6 +15,7 @@ import edu1 from "./edu1.svg";
 import edu2 from "./edu2.svg";
 import edu3 from "./edu3.svg";
 import edu4 from "./edu4.svg";
+import notfound from "./notfound.png";
 export {
   loginImg,
   profile,
@@ -33,4 +34,5 @@ export {
   edu2,
   edu3,
   edu4,
+  notfound
 };

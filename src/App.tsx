@@ -7,19 +7,55 @@ import Patient from "./pages/Patients/Patient";
 import Doctors from "./pages/doctors/Doctors";
 import Inventory from "./pages/inventory/Inventory";
 import Register from "./pages/register/Register";
+import PrivateRoute from "./routes";
 function App() {
   return (
     <main>
-        <Routes>
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
+      <Routes>
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
 
-          <Route path="/" element={<Home />} />
-          <Route path="/Appointments" element={<Appointment />} />
-          <Route path="/Patients" element={<Patient />} />
-          <Route path="/Doctors" element={<Doctors />} />
-          <Route path="/Inventory" element={<Inventory />} />
-        </Routes>
+        <Route
+          path="/"
+          element={
+            <PrivateRoute>
+              <Home />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/Appointments"
+          element={
+            <PrivateRoute>
+              <Appointment />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/Patients"
+          element={
+            <PrivateRoute>
+              <Patient />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/Doctors"
+          element={
+            <PrivateRoute>
+              <Doctors />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/Inventory"
+          element={
+            <PrivateRoute>
+              <Inventory />
+            </PrivateRoute>
+          }
+        />
+      </Routes>
     </main>
   );
 }
