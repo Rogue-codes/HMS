@@ -4,6 +4,7 @@ export interface NavProps {
 }
 
 export interface PatientProps {
+  _id:string;
   admitted: boolean;
   age: number;
   blood_group: string;

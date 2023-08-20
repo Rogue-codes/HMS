@@ -2,12 +2,13 @@ import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import Login from "./pages/login/Login";
 import Home from "./pages/Home/Home";
-import Appointment from "./pages/Appointment/Appointment";
 import Patient from "./pages/Patients/Patient";
 import Doctors from "./pages/doctors/Doctors";
 import Inventory from "./pages/inventory/Inventory";
 import Register from "./pages/register/Register";
 import PrivateRoute from "./routes";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function App() {
   return (
     <main>
@@ -23,14 +24,14 @@ function App() {
             </PrivateRoute>
           }
         />
-        <Route
+        {/* <Route
           path="/Appointments"
           element={
             <PrivateRoute>
               <Appointment />
             </PrivateRoute>
           }
-        />
+        /> */}
         <Route
           path="/Patients"
           element={
@@ -56,6 +57,7 @@ function App() {
           }
         />
       </Routes>
+      <ToastContainer />
     </main>
   );
 }

@@ -13,7 +13,7 @@ export interface InitialStateInterface{
 }
 const initialState: InitialStateInterface ={
     user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : {},
-    isLoggedIn: localStorage.getItem('user') ? true : false
+    isLoggedIn: localStorage.getItem('isLoggedIn') ? JSON.parse(localStorage.getItem("isLoggedIn")!) : false
 }
 
 
@@ -24,6 +24,8 @@ export const authSlice = createSlice({
         login : (state,action) =>{
             state.user = action.payload
             localStorage.setItem('user', JSON.stringify(state.user))
+            state.isLoggedIn = true
+            localStorage.setItem('isLoggedIn', JSON.stringify(state.isLoggedIn))
 
         },
         logout:(state)=>{

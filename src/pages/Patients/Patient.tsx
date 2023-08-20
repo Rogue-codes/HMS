@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Tab from "../../components/tabs/Tab";
 import { AiOutlinePlus, AiOutlineSend } from "react-icons/ai";
 import PatientTr from "../../components/table/PatientTR";
@@ -11,11 +12,12 @@ import { motion } from "framer-motion";
 import { useFormik, FormikErrors } from "formik";
 import DateSelect from "../../widgets/date-time/DateSelect";
 import { useDispatch, useSelector } from "react-redux";
-import { addPatient } from "../../store/reducers/patientSlice";
 import { notfound } from "../../../public/assets";
 import ApiFetcher from "../../utils/Api";
-// const [cookies, removeCookie] = useCookies([]);
-
+import { addPatient, getPatient } from "../../store/reducers/patientSlice";
+import PatientModal from "../../widgets/modal/PatientModal";
+import { toast } from "react-toastify";
+import DeleteModal from "../../widgets/modal/DeleteModal";
 
 export default function Patient() {
   const [activeTab, setActiveTab] = useState<number>(0);
@@ -25,6 +27,8 @@ export default function Patient() {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [userChatDetails, setUserChatDetails] = useState<PatientProps>();
   const [loading, setLoading] = useState<boolean>(false);
+  const [modalType, setModalType] = useState<string>("");
+  const [selectedPatient, setSelectedPatient] = useState<PatientProps>();
 
   const handleChat = (user: PatientProps) => {
     setShowMsgBox(true);
@@ -32,8 +36,6 @@ export default function Patient() {
   };
 
   const patient = useSelector((state: any) => state.patient.patients);
-
-  console.log(patient);
 
   const dropIn = {
     hidden: {
@@ -79,10 +81,10 @@ export default function Patient() {
           phone_number: values.phone_number,
           email: values.email,
           gender: values.gender,
-        }
-        );
-        setLoading(false)
-        dispatch(addPatient(res?.data?.data));
+        });
+        dispatch(addPatient(res.data.data));
+        toast.success(res.data.message);
+        setLoading(false);
         setShowModal(false);
       } catch (error) {
         setLoading(false);
@@ -117,6 +119,19 @@ export default function Patient() {
     },
   });
 
+  const getAllPatient = async () => {
+    try {
+      const res = await ApiFetcher.get(`/auth/patient/all`);
+      dispatch(getPatient(res.data.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAllPatient();
+  }, []);
+
   return (
     <div className="w-[80%] min-h-screen ml-[20%] pb-12">
       <div className=" rounded-lg shadow-[rgba(17,17,26,0.1)0px_1px_0px] bg-white">
@@ -128,7 +143,10 @@ export default function Patient() {
           />
           <button
             className="bg-blue-1 p-2 text-xs flex justify-start gap-3 items-center rounded-lg text-white hover:scale-105 transition-all"
-            onClick={() => setShowModal(true)}
+            onClick={() => {
+              setModalType("add");
+              setShowModal(true);
+            }}
           >
             <AiOutlinePlus size="15" /> New Patient
           </button>
@@ -160,7 +178,7 @@ export default function Patient() {
         </div>
 
         <div className="relative py-9 w-full mt-6">
-          {patient.length ? (
+          {patient ? (
             <table className="w-full">
               <thead>
                 <tr className="h-12 text-[#242222] text-xs">
@@ -179,6 +197,9 @@ export default function Patient() {
                     patient={patient}
                     index={index}
                     handleChat={handleChat}
+                    setModalType={setModalType}
+                    setShowModal={setShowModal}
+                    setSelectedPatient={setSelectedPatient}
                   />
                 ))}
               </tbody>
@@ -202,12 +223,12 @@ export default function Patient() {
             <div className="w-[18rem] flex flex-col justify-between items-center shadow-[0px_6px_16px_2px_rgba(0,0,0,0.16)] z-10 bg-white rounded-xl h-[20rem] absolute right-0 bottom-0">
               <div className="w-full flex justify-between items-center px-4 py-6 bg-blue-1 rounded-tr-xl rounded-tl-xl">
                 <div className="flex justify-start gap-2 items-center">
-                  <div className="w-8 bg-text-2 h-8 rounded-full">
+                  {/* <div className="w-8 bg-text-2 h-8 rounded-full">
                     <img src={userChatDetails?.img} alt="" />
-                  </div>
+                  </div> */}
                   <div>
                     <p className="text-xs text-white">
-                      {userChatDetails?.name}
+                      {userChatDetails?.patientName}
                     </p>
                     <p className="text-xs text-white">Online</p>
                   </div>
@@ -256,152 +277,178 @@ export default function Patient() {
                 className="absolute text-lg cursor-pointer hover:scale-110 transition-all text-text-2 right-4 top-4"
                 onClick={() => setShowModal(false)}
               />
-              <p className="text-blue-1 mb-5 text-sm font-bold">Add Patient</p>
-              <form action="" onSubmit={formik.handleSubmit}>
-                <div className="w-full">
-                  <input
-                    type="text"
-                    value={formik.values.name}
-                    onChange={formik.handleChange}
-                    className={`${
-                      formik.touched.name &&
-                      formik.errors.name &&
-                      "border border-red-500 bg-red-100"
-                    } w-full focus:outline-none rounded-lg px-2 py-3 shadow-[3px_3px_6px_0px_rgba(182,190,196,0.15),-1.5px_-1.5px_6px_0px_rgba(182,190,196,0.15)] placeholder:text-xs text-sm`}
-                    placeholder="Name"
-                    name="name"
-                    id="name"
-                  />
-                  {formik.touched.name && formik.errors.name ? (
-                    <p className="text-red-600 text-xs">{formik.errors.name}</p>
-                  ) : (
-                    ""
-                  )}
-                </div>
-                <div className="w-full mt-5 flex justify-between items-center">
-                  <div className="w-[48%] rounded-lg">
+              <p
+                className={`${
+                  modalType === "delete" ? "text-red-500" : "text-blue-1"
+                }  mb-5 text-sm font-bold`}
+              >
+                {modalType === "add"
+                  ? "Add Patient"
+                  : modalType === "view"
+                  ? "Edit User"
+                  : "Delete User"}
+              </p>
+              {modalType === "add" ? (
+                <form action="" onSubmit={formik.handleSubmit}>
+                  <div className="w-full">
                     <input
                       type="text"
-                      value={formik.values.age}
+                      value={formik.values.name}
                       onChange={formik.handleChange}
                       className={`${
-                        formik.touched.age &&
-                        formik.errors.age &&
+                        formik.touched.name &&
+                        formik.errors.name &&
                         "border border-red-500 bg-red-100"
-                      } w-full rounded-lg px-2 py-3 focus:outline-none shadow-[3px_3px_6px_0px_rgba(182,190,196,0.15),-1.5px_-1.5px_6px_0px_rgba(182,190,196,0.15)] placeholder:text-xs text-sm`}
-                      placeholder="age"
-                      name="age"
-                      id="age"
+                      } w-full focus:outline-none rounded-lg px-2 py-3 shadow-[3px_3px_6px_0px_rgba(182,190,196,0.15),-1.5px_-1.5px_6px_0px_rgba(182,190,196,0.15)] placeholder:text-xs text-sm`}
+                      placeholder="Name"
+                      name="name"
+                      id="name"
                     />
-                    {formik.touched.age && formik.errors.age ? (
+                    {formik.touched.name && formik.errors.name ? (
                       <p className="text-red-600 text-xs">
-                        {formik.errors.age}
+                        {formik.errors.name}
                       </p>
                     ) : (
                       ""
                     )}
                   </div>
-                  <div className="w-[48%] rounded-lg">
+                  <div className="w-full mt-5 flex justify-between items-center">
+                    <div className="w-[48%] rounded-lg">
+                      <input
+                        type="text"
+                        value={formik.values.age}
+                        onChange={formik.handleChange}
+                        className={`${
+                          formik.touched.age &&
+                          formik.errors.age &&
+                          "border border-red-500 bg-red-100"
+                        } w-full rounded-lg px-2 py-3 focus:outline-none shadow-[3px_3px_6px_0px_rgba(182,190,196,0.15),-1.5px_-1.5px_6px_0px_rgba(182,190,196,0.15)] placeholder:text-xs text-sm`}
+                        placeholder="age"
+                        name="age"
+                        id="age"
+                      />
+                      {formik.touched.age && formik.errors.age ? (
+                        <p className="text-red-600 text-xs">
+                          {formik.errors.age}
+                        </p>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                    <div className="w-[48%] rounded-lg">
+                      <input
+                        type="text"
+                        value={formik.values.blood_group}
+                        onChange={formik.handleChange}
+                        className={`${
+                          formik.touched.blood_group &&
+                          formik.errors.blood_group &&
+                          "border border-red-500 bg-red-100"
+                        } w-full rounded-lg px-2 py-3 focus:outline-none shadow-[3px_3px_6px_0px_rgba(182,190,196,0.15),-1.5px_-1.5px_6px_0px_rgba(182,190,196,0.15)] placeholder:text-xs text-sm`}
+                        placeholder="blood group"
+                        name="blood_group"
+                        id="blood_group"
+                      />
+                      {formik.touched.blood_group &&
+                      formik.errors.blood_group ? (
+                        <p className="text-red-600 text-xs">
+                          {formik.errors.blood_group}
+                        </p>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                  </div>
+                  <div className="w-full mt-5">
                     <input
                       type="text"
-                      value={formik.values.blood_group}
+                      value={formik.values.email}
                       onChange={formik.handleChange}
+                      name="email"
+                      id="email"
                       className={`${
-                        formik.touched.blood_group &&
-                        formik.errors.blood_group &&
+                        formik.touched.email &&
+                        formik.errors.email &&
                         "border border-red-500 bg-red-100"
-                      } w-full rounded-lg px-2 py-3 focus:outline-none shadow-[3px_3px_6px_0px_rgba(182,190,196,0.15),-1.5px_-1.5px_6px_0px_rgba(182,190,196,0.15)] placeholder:text-xs text-sm`}
-                      placeholder="blood group"
-                      name="blood_group"
-                      id="blood_group"
+                      } w-full focus:outline-none rounded-lg px-2 py-3 shadow-[3px_3px_6px_0px_rgba(182,190,196,0.15),-1.5px_-1.5px_6px_0px_rgba(182,190,196,0.15)] placeholder:text-xs text-sm`}
+                      placeholder="Email"
                     />
-                    {formik.touched.blood_group && formik.errors.blood_group ? (
+                    {formik.touched.email && formik.errors.email ? (
                       <p className="text-red-600 text-xs">
-                        {formik.errors.blood_group}
+                        {formik.errors.email}
                       </p>
                     ) : (
                       ""
                     )}
                   </div>
-                </div>
-                <div className="w-full mt-5">
-                  <input
-                    type="text"
-                    value={formik.values.email}
-                    onChange={formik.handleChange}
-                    name="email"
-                    id="email"
-                    className={`${
-                      formik.touched.email &&
-                      formik.errors.email &&
-                      "border border-red-500 bg-red-100"
-                    } w-full focus:outline-none rounded-lg px-2 py-3 shadow-[3px_3px_6px_0px_rgba(182,190,196,0.15),-1.5px_-1.5px_6px_0px_rgba(182,190,196,0.15)] placeholder:text-xs text-sm`}
-                    placeholder="Email"
-                  />
-                  {formik.touched.email && formik.errors.email ? (
-                    <p className="text-red-600 text-xs">
-                      {formik.errors.email}
-                    </p>
-                  ) : (
-                    ""
-                  )}
-                </div>
 
-                <div className="w-full mt-5">
-                  <input
-                    type="text"
-                    value={formik.values.phone_number}
-                    onChange={formik.handleChange}
-                    name="phone_number"
-                    id="phone_number"
-                    className={`${
-                      formik.touched.phone_number &&
-                      formik.errors.phone_number &&
-                      "border border-red-500 bg-red-100"
-                    } w-full focus:outline-none rounded-lg px-2 py-3 shadow-[3px_3px_6px_0px_rgba(182,190,196,0.15),-1.5px_-1.5px_6px_0px_rgba(182,190,196,0.15)] placeholder:text-xs text-sm`}
-                    placeholder="Phone"
-                  />
-                  {formik.touched.phone_number && formik.errors.phone_number ? (
-                    <p className="text-red-600 text-xs">
-                      {formik.errors.phone_number}
-                    </p>
-                  ) : (
-                    ""
-                  )}
-                </div>
+                  <div className="w-full mt-5">
+                    <input
+                      type="text"
+                      value={formik.values.phone_number}
+                      onChange={formik.handleChange}
+                      name="phone_number"
+                      id="phone_number"
+                      className={`${
+                        formik.touched.phone_number &&
+                        formik.errors.phone_number &&
+                        "border border-red-500 bg-red-100"
+                      } w-full focus:outline-none rounded-lg px-2 py-3 shadow-[3px_3px_6px_0px_rgba(182,190,196,0.15),-1.5px_-1.5px_6px_0px_rgba(182,190,196,0.15)] placeholder:text-xs text-sm`}
+                      placeholder="Phone"
+                    />
+                    {formik.touched.phone_number &&
+                    formik.errors.phone_number ? (
+                      <p className="text-red-600 text-xs">
+                        {formik.errors.phone_number}
+                      </p>
+                    ) : (
+                      ""
+                    )}
+                  </div>
 
-                <div className="w-full mt-5">
-                  <select
-                    name="gender"
-                    value={formik.values.gender}
-                    onChange={formik.handleChange}
-                    id="gender"
-                    className={`${
-                      formik.touched.gender &&
-                      formik.errors.gender &&
-                      "border border-red-500 bg-red-100"
-                    } w-full focus:outline-none rounded-lg px-2 py-3 shadow-[3px_3px_6px_0px_rgba(182,190,196,0.15),-1.5px_-1.5px_6px_0px_rgba(182,190,196,0.15)] placeholder:text-xs text-xs`}
+                  <div className="w-full mt-5">
+                    <select
+                      name="gender"
+                      value={formik.values.gender}
+                      onChange={formik.handleChange}
+                      id="gender"
+                      className={`${
+                        formik.touched.gender &&
+                        formik.errors.gender &&
+                        "border border-red-500 bg-red-100"
+                      } w-full focus:outline-none rounded-lg px-2 py-3 shadow-[3px_3px_6px_0px_rgba(182,190,196,0.15),-1.5px_-1.5px_6px_0px_rgba(182,190,196,0.15)] placeholder:text-xs text-xs`}
+                    >
+                      <option value="">Select Gender</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                    </select>
+                    {formik.touched.gender && formik.errors.gender ? (
+                      <p className="text-red-600 text-xs">
+                        {formik.errors.gender}
+                      </p>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="w-full p-3 bg-blue-1 text-white mt-5 rounded-lg hover:scale-105 transition-all"
                   >
-                    <option value="">Select Gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                  </select>
-                  {formik.touched.gender && formik.errors.gender ? (
-                    <p className="text-red-600 text-xs">
-                      {formik.errors.gender}
-                    </p>
-                  ) : (
-                    ""
-                  )}
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full p-3 bg-blue-1 text-white mt-5 rounded-lg hover:scale-105 transition-all"
-                >
-                  {loading ? "Loading..." : "Submit"}
-                </button>
-              </form>
+                    {loading ? "Loading..." : "Submit"}
+                  </button>
+                </form>
+              ) : modalType === "view" ? (
+                <PatientModal
+                  selectedPatient={selectedPatient}
+                  setShowModal={setShowModal}
+                />
+              ) : (
+                <DeleteModal
+                  selectedPatient={selectedPatient}
+                  setShowModal={setShowModal}
+                />
+              )}
             </motion.div>
           </Backdrop>
         )}

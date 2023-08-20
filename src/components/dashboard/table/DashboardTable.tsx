@@ -1,17 +1,21 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
-import { patientArr } from "../../../utils";
+import { useSelector } from "react-redux";
+import { PatientProps } from "../../../types/interface";
 
 export default function DashboardTable() {
   const [activeTab, setActiveTab] = useState<number>(0);
 
   const tabArr: string[] = ["PATIENT", "APPOINTMENS"];
-  const First_Last = (name: string) => {
-    const words = name.split(" ");
-    const FName = words.length > 0 && words[0][0];
-    const LName = words.length > 1 && words[words.length - 1][0];
-    const abrv = `${FName} ${LName}`;
-    return abrv;
-  };
+  // const First_Last = (name: string) => {
+  //   const words = name.split(" ");
+  //   const FName = words.length > 0 && words[0][0];
+  //   const LName = words.length > 1 && words[words.length - 1][0];
+  //   const abrv = `${FName} ${LName}`;
+  //   return abrv;
+  // };
+
+  const patient = useSelector((state:any)=>state.patient.patients)
   return (
     <div>
       <div className="flex p-2 pb-1 relative justify-start gap-8">
@@ -45,29 +49,26 @@ export default function DashboardTable() {
             </tr>
           </thead>
           <tbody className="w-full">
-            {patientArr.map((patient, index) => (
+            {patient.map((patient:PatientProps, index:number) => (
               <tr
                 className="h-12 text-[#595959] text-xs w-full border-t border-b border-[#CFCFCF]"
                 key={index}
               >
-                <td className="text-center">{patient.time}</td>
-                <td className="text-center">{patient.date}</td>
+                <td className="text-center">{patient.createdAt}</td>
+                <td className="text-center">{patient.createdAt}</td>
                 <td className="text-center">
                   <div className="w-40 mx-auto flex justify-start gap-3 items-center">
                     <div className="w-8 h-8 rounded-full">
-                      {patient.img && <img src={patient.img} alt="" />}
-                      {!patient.img && (
                         <div
                           className={`w-full h-full rounded-full bg-[#538CFF] flex justify-center items-center text-white`}
                         >
-                          {First_Last(patient.name)}
+                          {patient.patientName}
                         </div>
-                      )}
                     </div>
-                    {patient.name}
+                    {patient.patientName}
                   </div>
                 </td>
-                <td className="text-center">{patient.doctor}</td>
+                <td className="text-center">{patient.patientName}</td>
                 {activeTab === 1 && (
                   <td
                     className={`${
