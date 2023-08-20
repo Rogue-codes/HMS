@@ -1,5 +1,5 @@
 import { doctor1, doctor2, doctor3, doctor4, doctor5, edu1, edu2, edu3, edu4, eg, elizabet, gopal, rajan, sumanth } from "../../public/assets";
-import { DoctorProps, DrugProps, EduTypes, NavProps, PatientProps } from "../types/interface";
+import { DoctorProps, DrugProps, EduTypes, NavProps } from "../types/interface";
 
 export const NavLinks: NavProps[] = [
     {
@@ -33,111 +33,6 @@ export const NavLinks: NavProps[] = [
     
 ]
 
-export const patientArr: PatientProps[] =[
-    {
-        name: "Elizabeth Polson",
-        age: 32,
-        time: "9:30 AM",
-        date: "05/12/2022",
-        doctor: "Dr. John",
-        fee_status: true,
-        blood_group: "B+ve",
-        phone_number: "+91 12345 67890",
-        email: "elsabethpolsan@hotmail.com",
-        gender:"Female",
-        img: elizabet,
-        dateAdmitted:"",
-        dateDischarged:""
-    },
-    {
-        name: "John David",
-        age: 28,
-        time: "9:30 AM",
-        date: "05/12/2022",
-        doctor: "Dr. Joel",
-        fee_status: false,
-        blood_group: "B+ve",
-        phone_number: "+91 12345 67890",
-        email: "davidjohn22@gmail.com",
-        gender:"Male",
-        dateAdmitted:"",
-        dateDischarged:""
-    },
-    {
-        name: "Krishtav Rajan",
-        age: 24,
-        time: "10:30 AM",
-        date: "05/12/2022",
-        doctor: "Dr. Joel",
-        fee_status: true,
-        blood_group: "AB-ve",
-        phone_number: "+91 12345 67890",
-        email: "krishnarajan23@gmail.com",
-        gender:"Male",
-        dateAdmitted:"",
-        dateDischarged:""
-    },
-    {
-        name: "Sumanth Tinson",
-        age: 26,
-        time: "11:00 AM",
-        date: "05/12/2022",
-        doctor: "Dr. Joel",
-        fee_status: false,
-        blood_group: "O+ve",
-        phone_number: "+91 12345 67890",
-        email: "tintintin@gmail.com",
-        gender:"Male",
-        img:sumanth,
-        dateAdmitted:"",
-        dateDischarged:""
-    },
-    {
-        name: "EG Subramani",
-        age: 77,
-        time: "11:30 AM",
-        date: "05/12/2022",
-        doctor: "Dr. Joel",
-        fee_status: false,
-        blood_group: "AB+ve",
-        phone_number: "+91 12345 67890",
-        email: "egs31322@gmail.com",
-        gender:"Male",
-        img:eg,
-        dateAdmitted:"",
-        dateDischarged:""
-    },
-    {
-        name: "Ranjan Maari",
-        age: 77,
-        time: "11:00 AM",
-        date: "05/12/2022",
-        doctor: "Dr. John",
-        fee_status: false,
-        blood_group: "O+ve",
-        phone_number: "+91 12345 67890",
-        email: "ranajanmaari@yahoo.com",
-        gender:"Male",
-        img:rajan,
-        dateAdmitted:"",
-        dateDischarged:""
-    },
-    {
-        name: "Philipile Gopal",
-        age: 55,
-        time: "11:00 AM",
-        date: "05/12/2022",
-        doctor: "Dr. John",
-        fee_status: true,
-        blood_group: "O-ve",
-        phone_number: "+91 12345 67890",
-        email: "gopal22@gmail.com",
-        gender:"Male",
-        img:gopal,
-        dateAdmitted:"",
-        dateDischarged:""
-    },
-]
 
 export const doctorArr: DoctorProps[] =[
     {

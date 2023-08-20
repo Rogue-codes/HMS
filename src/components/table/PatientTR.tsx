@@ -6,10 +6,22 @@ interface Patient {
   patient: PatientProps;
   index: number;
   handleChat?: (user: PatientProps) => void;
+  setModalType: React.Dispatch<React.SetStateAction<string>>;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setSelectedPatient: React.Dispatch<
+    React.SetStateAction<PatientProps | undefined>
+  >;
 }
-export default function PatientTr({ patient, index, handleChat }: Patient) {
+export default function PatientTr({
+  patient,
+  index,
+  handleChat,
+  setModalType,
+  setShowModal,
+  setSelectedPatient,
+}: Patient) {
   const First_Last = (name: string) => {
-    const words = name.split(" ");
+    const words = name?.split(" ");
     const FName = words.length > 0 && words[0][0];
     const LName = words.length > 1 && words[words.length - 1][0];
     const abrv = `${FName}${LName}`;
@@ -48,10 +60,24 @@ export default function PatientTr({ patient, index, handleChat }: Patient) {
               <BsFillChatFill sizex="20" color="white" />
             </div>
           )}
-          <div className="w-6 h-6 hover:scale-105 transition-all cursor-pointer border rounded-lg border-red-500 flex justify-center items-center">
+          <div
+            className="w-6 h-6 hover:scale-105 transition-all cursor-pointer border rounded-lg border-red-500 flex justify-center items-center"
+            onClick={() => {
+              setModalType("delete");
+              setShowModal(true);
+              setSelectedPatient(patient);
+            }}
+          >
             <LiaTimesSolid className="text-red-500" />
           </div>
-          <div className="w-6 h-6 hover:scale-105 transition-all cursor-pointer border rounded-lg text-blue-1 flex justify-center items-center border-blue-1">
+          <div
+            className="w-6 h-6 hover:scale-105 transition-all cursor-pointer border rounded-lg text-blue-1 flex justify-center items-center border-blue-1"
+            onClick={() => {
+              setModalType("view");
+              setShowModal(true);
+              setSelectedPatient(patient);
+            }}
+          >
             <BsInfo size="20" className="text-blue-1" />
           </div>
         </div>

@@ -23,7 +23,7 @@ export default function Home() {
             <PieChartBox />
           </div>
           <div className="bg-white shadow-[3px_3px_6px_0px_rgba(182,190,196,0.15),-1.5px_-1.5px_6px_0px_rgba(182,190,196,0.15)] h-[20rem] m-3 rounded-lg">
-            <PatientFee />
+            {/* <PatientFee /> */}
           </div>
         </div>
       </div>
